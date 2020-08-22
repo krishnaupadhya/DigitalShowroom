@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "407426925230",
+    "firebase_url": "https://arcore-a2953.firebaseio.com",
+    "project_id": "arcore-a2953",
+    "storage_bucket": "arcore-a2953.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:407426925230:android:413fd969c7a0b0e36ba33f",
+        "android_client_info": {
+          "package_name": "com.digital.showroom"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "407426925230-mg1ngdn2ebcpvi7endbp66vn7coodka1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDybSUayz_6XcGkt5tepS_8BNcJ5JE6O_0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "407426925230-mg1ngdn2ebcpvi7endbp66vn7coodka1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
