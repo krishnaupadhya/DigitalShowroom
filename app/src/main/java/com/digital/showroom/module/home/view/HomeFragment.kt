@@ -109,7 +109,7 @@ class HomeFragment : Fragment() {
 
     override fun onDestroy() {
         super.onDestroy()
-        view_pager_car.unregisterOnPageChangeCallback(pageChangeCallback)
+        view_pager_car?.unregisterOnPageChangeCallback(pageChangeCallback)
     }
 
 
