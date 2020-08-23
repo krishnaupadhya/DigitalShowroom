@@ -18,4 +18,18 @@ object ImageBindingAdapter {
         }
 
     }
+
+    @JvmStatic
+    @BindingAdapter("app:gearImage")
+    fun setGearImageUrl(view: ImageView, gearType: String?) {
+
+        var imageId = R.drawable.ic_gear_manual
+        if (!AppConstants.MANUAL_GEAR.equals(gearType, ignoreCase = true))
+            imageId = R.drawable.ic_gear_automatic
+        Picasso.with(view.context)
+            .load(imageId)
+            .placeholder(R.drawable.ic_gear_manual)
+            .into(view)
+
+    }
 }

@@ -6,10 +6,11 @@ package com.digital.showroom.utils
 class AppConstants {
 
     companion object {
-        val APP_TAG: String = "DS_TAG"
-        val KEY_VEHICLE_INFO: String = "VehicleInfo"
-        val KEY_MODEL_INFO: String = "model_info"
-        val KEY_VEHICLES: String = "Vehicles"
+        const val APP_TAG: String = "DS_TAG"
+        const val MANUAL_GEAR: String = "MANUAL"
+        const val KEY_VEHICLE_INFO: String = "VehicleInfo"
+        const val KEY_MODEL_INFO: String = "model_info"
+        const val KEY_VEHICLES: String = "Vehicles"
 
         const val KEY_INTENT_POSITION = "position"
 

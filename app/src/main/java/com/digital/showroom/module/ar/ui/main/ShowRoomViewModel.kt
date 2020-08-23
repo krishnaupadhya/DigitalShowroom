@@ -11,7 +11,8 @@ class ShowRoomViewModel : ViewModel() {
     var modelFileName = MutableLiveData<File>()
 
     fun downLoadModel(position: Int) {
-        val fileName: String = DataRepository.getCars()?.get(position)?.model3DName!!
+
+        val fileName: String = DataRepository.getCars()?.get(position)?.model_3d_name!!
         val storage = FirebaseStorage.getInstance()
         val modelRef = storage.reference.child("$fileName.glb")
         try {

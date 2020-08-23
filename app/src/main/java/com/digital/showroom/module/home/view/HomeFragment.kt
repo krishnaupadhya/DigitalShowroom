@@ -1,13 +1,11 @@
 package com.digital.showroom.module.home.view
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -16,10 +14,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
 import com.digital.showroom.R
 import com.digital.showroom.model.CarData
-import com.digital.showroom.module.ar.ShowRoomActivity
 import com.digital.showroom.module.home.viewmodel.HomeViewModel
-import com.digital.showroom.utils.AppConstants
-import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.android.synthetic.main.home_fragment.*
 
 class HomeFragment : Fragment() {
@@ -42,12 +37,8 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        car_loding_anim.playAnimation()
 
-        view_in_3d.setOnClickListener {
-            val intent = Intent(activity, ShowRoomActivity::class.java)
-            intent.putExtra(AppConstants.KEY_INTENT_POSITION, view_pager_car.currentItem)
-            startActivity(intent)
-        }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -59,6 +50,8 @@ class HomeFragment : Fragment() {
     }
 
     fun setPagerAdapter(carList: List<CarData>) {
+        car_loding_anim.pauseAnimation()
+        car_loding_anim.visibility=View.GONE
         val carViewAdapter = CarViewAdapter(activity as AppCompatActivity, carList.size)
         view_pager_car.adapter = carViewAdapter
         view_pager_car.registerOnPageChangeCallback(pageChangeCallback)
@@ -89,6 +82,7 @@ class HomeFragment : Fragment() {
 
     private var pageChangeCallback = object : ViewPager2.OnPageChangeCallback() {
         override fun onPageSelected(position: Int) {
+
             viewModel.getItemAtPosition(position)
             for (element in dots) {
                 element?.setImageDrawable(

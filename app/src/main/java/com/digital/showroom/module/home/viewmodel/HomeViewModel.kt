@@ -6,7 +6,10 @@ import com.digital.showroom.model.CarData
 import com.digital.showroom.repository.DataRepository
 import com.digital.showroom.utils.AppConstants
 import com.digital.showroom.utils.Logger
+import com.google.common.reflect.TypeToken
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.gson.Gson
+import java.lang.reflect.Type
 
 
 class HomeViewModel : ViewModel() {
@@ -27,20 +30,9 @@ class HomeViewModel : ViewModel() {
                     data?.let {
                         Logger.log("fetchMessagesFromFirebase get success")
 
-                        val messageList = data.get(AppConstants.KEY_MODEL_INFO) as ArrayList<*>
-
-                        val cars = mutableListOf<CarData>()
-                        for (msg in messageList) {
-                            val map = msg as HashMap<*, *>
-                            cars.add(
-                                CarData(
-                                    map["model"]!! as String,
-                                    map["image_url"]!! as String,
-                                    map["model_3d_name"]!! as String,
-                                    map["year"]!! as String
-                                )
-                            )
-                        }
+                        val result = data.get(AppConstants.KEY_MODEL_INFO) as ArrayList<*>
+                        // convert your list to json
+                        val cars: ArrayList<CarData> = getCarListFromMap(result)
                         DataRepository.setCarsList(cars)
                         carsList.value = cars
                     }
@@ -49,6 +41,16 @@ class HomeViewModel : ViewModel() {
             .addOnFailureListener { exception ->
                 Logger.log("fetchMessagesFromFirebase get failed: ${exception.message}")
             }
+    }
+
+    private fun getCarListFromMap(
+        result: ArrayList<*>
+    ): ArrayList<CarData> {
+        val gson = Gson()
+        val jsonCartList = gson.toJson(result)
+        val userListType: Type =
+            object : TypeToken<ArrayList<CarData?>?>() {}.type
+        return gson.fromJson(jsonCartList, userListType)
     }
 
     fun getItemAtPosition(position: Int) {
