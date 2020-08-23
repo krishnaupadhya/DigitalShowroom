@@ -20,7 +20,7 @@ class HomeViewModel : ViewModel() {
         getVehiclesList()
     }
 
-    private fun getVehiclesList() {
+    fun getVehiclesList() {
         FirebaseFirestore.getInstance()
             .document("${AppConstants.KEY_VEHICLE_INFO}/${AppConstants.KEY_VEHICLES}")
             .get()
@@ -28,8 +28,7 @@ class HomeViewModel : ViewModel() {
                 if (document != null) {
                     val data = document.data
                     data?.let {
-                        Logger.log("fetchMessagesFromFirebase get success")
-
+                        Logger.log("car list get success")
                         val result = data.get(AppConstants.KEY_MODEL_INFO) as ArrayList<*>
                         // convert your list to json
                         val cars: ArrayList<CarData> = getCarListFromMap(result)
@@ -39,7 +38,7 @@ class HomeViewModel : ViewModel() {
                 }
             }
             .addOnFailureListener { exception ->
-                Logger.log("fetchMessagesFromFirebase get failed: ${exception.message}")
+                Logger.log("car list get failed: ${exception.message}")
             }
     }
 
