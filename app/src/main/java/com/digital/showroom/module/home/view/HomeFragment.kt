@@ -38,7 +38,9 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         car_loding_anim.playAnimation()
-
+        tv_title.setOnClickListener(View.OnClickListener {
+            viewModel.getVehiclesList()
+        })
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -50,13 +52,17 @@ class HomeFragment : Fragment() {
     }
 
     fun setPagerAdapter(carList: List<CarData>) {
+
         car_loding_anim.pauseAnimation()
         car_loding_anim.visibility=View.GONE
+        view_pager_card.visibility=View.VISIBLE
+        btn_book_test_drive.visibility=View.VISIBLE
+
         val carViewAdapter = CarViewAdapter(activity as AppCompatActivity, carList.size)
         view_pager_car.adapter = carViewAdapter
         view_pager_car.registerOnPageChangeCallback(pageChangeCallback)
         dots = arrayOfNulls<ImageView>(carList.size)
-
+        slider_dots.removeAllViews()
         for (i in carList.indices) {
             dots[i] = ImageView(activity)
             dots[i]!!.setImageDrawable(

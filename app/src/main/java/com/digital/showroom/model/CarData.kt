@@ -9,5 +9,8 @@ data class CarData(
     var model_3d_name: String,
     var year: String,
     var gear_type: String,
-    var rating:Int
+    var engine_capacity: String,
+    var milage: String,
+    var rating: Int,
+    var division: String
 )

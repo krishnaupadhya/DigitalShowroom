@@ -17,4 +17,5 @@
     <dimen name="text_16sp">16sp</dimen>
     <dimen name="text_24sp">24sp</dimen>
     <dimen name="dimen_48dp">48dp</dimen>
+    <dimen name="dime_10dp">10dp</dimen>
 </resources>
