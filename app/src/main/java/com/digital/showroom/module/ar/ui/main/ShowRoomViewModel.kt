@@ -13,7 +13,7 @@ class ShowRoomViewModel : ViewModel() {
 
     fun downLoadModel(position: Int) {
 
-        val fileName: String = DataRepository.getCars()?.get(position)?.model_3d_name!!
+        val fileName: String = DataRepository.getCars()?.get(position)?.model_renderable_name!!
         val storage = FirebaseStorage.getInstance()
         val modelRef = storage.reference.child("$fileName.glb")
         try {

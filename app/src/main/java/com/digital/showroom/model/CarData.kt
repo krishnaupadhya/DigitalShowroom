@@ -4,13 +4,14 @@ package com.digital.showroom.model
  * Created by Krishna Upadhya on 19/08/20.
  */
 data class CarData(
-    var model: String,
-    var image_url: String,
-    var model_3d_name: String,
-    var year: String,
-    var gear_type: String,
+    var VIN: String,
+    var division: String,
     var engine_capacity: String,
+    var gear_type: String,
+    var image_url: String,
     var milage: String,
+    var model: String,
+    var model_renderable_name: String,
     var rating: Int,
-    var division: String
+    var year: String
 )
