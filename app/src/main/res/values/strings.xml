@@ -3,6 +3,7 @@
     <string name="cars">Cars</string>
     <string name="book_test_drive">Book Test Drive</string>
     <string name="view_in_3d">View in 3D</string>
-    <string name="downloading">downloading…</string>
+    <string name="downloading">downloading model, please wait…</string>
     <string name="find_car_parts">Find car parts</string>
+    <string name="rendering">Rendering model, please wait…</string>
 </resources>

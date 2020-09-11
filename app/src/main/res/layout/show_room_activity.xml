@@ -1,12 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/show_room"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".module.ar.ShowRoomActivity">
+
+
+    <ProgressBar
+        android:visibility="gone"
+        android:id="@+id/progress_bar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:indeterminate="true" />
+
 
     <fragment
         android:id="@+id/sceneform_fragment"
@@ -14,4 +23,44 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
+
+    <!--    <RelativeLayout-->
+    <!--        android:id="@+id/progress_bar"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="match_parent"-->
+    <!--        android:layout_centerInParent="true"-->
+    <!--        android:background="@color/transparent_black"-->
+    <!--        android:clickable="true"-->
+    <!--        android:focusable="true"-->
+    <!--        android:gravity="center">-->
+    <!--        &lt;!&ndash; Thumbs Up Button &ndash;&gt;-->
+    <!--        <ProgressBar-->
+    <!--            android:id="@+id/progress"-->
+    <!--            style="?android:attr/progressBarStyle"-->
+    <!--            android:layout_width="wrap_content"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:indeterminate="true" />-->
+
+    <!--        <TextView-->
+    <!--            android:id="@+id/progress_status"-->
+    <!--            android:layout_width="wrap_content"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:layout_below="@id/progress"-->
+    <!--            android:layout_marginTop="@dimen/dimen_8dp"-->
+    <!--            android:fontFamily="@font/gotham_bold"-->
+    <!--            android:text="@string/downloading"-->
+    <!--            android:textColor="@color/white" />-->
+    <!--    </RelativeLayout>-->
+
+    <TextView
+        android:visibility="gone"
+        android:id="@+id/progress_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:fontFamily="@font/gotham_bold"
+        android:padding="@dimen/dimen_24dp"
+        android:text="@string/downloading"
+        android:textColor="@color/colorAccent"
+        android:textSize="@dimen/text_16sp" />
 </RelativeLayout>

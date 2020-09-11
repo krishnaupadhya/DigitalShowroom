@@ -15,4 +15,7 @@
     <color name="btn_logout">#FAEEE8</color>
     <color name="btn_logout_border">#FAE8D9</color>
     <color name="opaque_gray">#1A000000</color>
+
+    <color name="transparent_black">#80000000</color>
+
 </resources>

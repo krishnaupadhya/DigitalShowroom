@@ -2,17 +2,25 @@ package com.digital.showroom.module.ar.ui.main
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.digital.showroom.repository.DataRepository
 import com.digital.showroom.utils.Logger
 import com.google.firebase.storage.FirebaseStorage
+import kotlinx.coroutines.launch
 import java.io.File
 
 class ShowRoomViewModel : ViewModel() {
 
     var modelFileName = MutableLiveData<File?>()
 
-    fun downLoadModel(position: Int) {
 
+    fun startDownloading(position:Int){
+        viewModelScope.launch {
+            downloadModel(position)
+        }
+    }
+
+    private fun downloadModel(position: Int) {
         val fileName: String = DataRepository.getCars()?.get(position)?.model_renderable_name!!
         val storage = FirebaseStorage.getInstance()
         val modelRef = storage.reference.child("$fileName.glb")
@@ -21,7 +29,7 @@ class ShowRoomViewModel : ViewModel() {
             modelRef.getFile(file).addOnSuccessListener {
                 Logger.log("$fileName model download success")
                 modelFileName.value = file
-            }.addOnFailureListener{
+            }.addOnFailureListener {
                 Logger.log("$fileName model download failed ${it.localizedMessage}")
                 modelFileName.value = null
             }

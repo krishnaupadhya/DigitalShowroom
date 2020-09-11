@@ -17,7 +17,6 @@ class HomeActivity : AppCompatActivity() {
                 .replace(R.id.container, HomeFragment.newInstance())
                 .commitNow()
         }
-
     }
 
     override fun onResume() {

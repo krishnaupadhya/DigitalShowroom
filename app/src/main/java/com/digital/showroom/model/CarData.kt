@@ -5,13 +5,13 @@ package com.digital.showroom.model
  */
 data class CarData(
     var VIN: String,
+    var model: String,
+    var year: String,
+    var image_url: String,
+    var model_renderable_name: String,
+    var rating: Int,
     var division: String,
     var engine_capacity: String,
     var gear_type: String,
-    var image_url: String,
-    var milage: String,
-    var model: String,
-    var model_renderable_name: String,
-    var rating: Int,
-    var year: String
+    var milage: String
 )

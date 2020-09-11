@@ -1,5 +1,6 @@
 package com.digital.showroom.module.home.view
 
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -15,7 +16,13 @@ import androidx.viewpager2.widget.ViewPager2
 import com.digital.showroom.R
 import com.digital.showroom.model.CarData
 import com.digital.showroom.module.home.viewmodel.HomeViewModel
+import com.digital.showroom.repository.DataRepository
+import com.digital.showroom.utils.AppConstants
+import com.digital.showroom.utils.Logger
+import com.google.ar.sceneform.assets.RenderableSource
+import com.google.ar.sceneform.rendering.ModelRenderable
 import kotlinx.android.synthetic.main.home_fragment.*
+import java.io.File
 
 class HomeFragment : Fragment() {
 
@@ -38,9 +45,31 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         car_loding_anim.playAnimation()
-        tv_title.setOnClickListener(View.OnClickListener {
+        tv_title.setOnClickListener {
             viewModel.getVehiclesList()
-        })
+        }
+    }
+
+    private fun renderGlbModel() {
+        Logger.log("renderGlbModel")
+        val renderableSource = RenderableSource
+            .builder()
+            .setSource(activity, Uri.parse(AppConstants.CIVIC_MODEL_GLB_NAME), RenderableSource.SourceType.GLB)
+            .setRecenterMode(RenderableSource.RecenterMode.ROOT)
+            .build()
+
+        ModelRenderable
+            .builder()
+            .setSource(activity, renderableSource)
+            .setRegistryId(Uri.parse(AppConstants.CIVIC_MODEL_GLB_NAME))
+            .build()
+            .thenAccept { modelRenderable ->
+                Logger.log("rendered")
+                DataRepository.renderableAsset = modelRenderable
+            }.exceptionally {
+                Logger.log("render failed" + it.localizedMessage)
+                null
+            }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -49,9 +78,10 @@ class HomeFragment : Fragment() {
         viewModel.carsList.observe(viewLifecycleOwner, Observer {
             setPagerAdapter(it)
         })
+        renderGlbModel()
     }
 
-    fun setPagerAdapter(carList: List<CarData>) {
+    private fun setPagerAdapter(carList: List<CarData>) {
 
         car_loding_anim.pauseAnimation()
         car_loding_anim.visibility=View.GONE
