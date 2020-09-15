@@ -6,4 +6,7 @@
     <string name="downloading">downloading model, please wait…</string>
     <string name="find_car_parts">Find car parts</string>
     <string name="rendering">Rendering model, please wait…</string>
+    <string name="white">white</string>
+    <string name="red">Red</string>
+    <string name="blue">Blue</string>
 </resources>

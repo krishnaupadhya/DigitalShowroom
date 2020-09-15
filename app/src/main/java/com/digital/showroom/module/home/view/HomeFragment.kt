@@ -22,6 +22,8 @@ import com.digital.showroom.utils.Logger
 import com.google.ar.sceneform.assets.RenderableSource
 import com.google.ar.sceneform.rendering.ModelRenderable
 import kotlinx.android.synthetic.main.home_fragment.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import java.io.File
 
 class HomeFragment : Fragment() {
@@ -46,28 +48,38 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         car_loding_anim.playAnimation()
         tv_title.setOnClickListener {
-            viewModel.getVehiclesList()
+//            viewModel.getVehiclesList()
         }
     }
 
-    private fun renderGlbModel() {
-        Logger.log("renderGlbModel")
+    private fun renderGlbModel(modelName: String) {
+        Logger.log("renderGlbModel $modelName")
         val renderableSource = RenderableSource
             .builder()
-            .setSource(activity, Uri.parse(AppConstants.CIVIC_MODEL_GLB_NAME), RenderableSource.SourceType.GLB)
+            .setSource(
+                activity,
+                Uri.parse(modelName),
+                RenderableSource.SourceType.GLB
+            )
             .setRecenterMode(RenderableSource.RecenterMode.ROOT)
             .build()
 
         ModelRenderable
             .builder()
             .setSource(activity, renderableSource)
-            .setRegistryId(Uri.parse(AppConstants.CIVIC_MODEL_GLB_NAME))
+            .setRegistryId(Uri.parse(modelName))
             .build()
             .thenAccept { modelRenderable ->
-                Logger.log("rendered")
-                DataRepository.renderableAsset = modelRenderable
+                Logger.log("$modelName rendered")
+                if (AppConstants.CIVIC_MODEL_GLB_NAME.equals(modelName)) {
+                    DataRepository.renderableAsset = modelRenderable
+                } else if (AppConstants.CIVIC_BLUE_MODEL_GLB_NAME.equals(modelName)) {
+                    DataRepository.renderableBlueAsset = modelRenderable
+                } else {
+                    DataRepository.renderableRedAsset = modelRenderable
+                }
             }.exceptionally {
-                Logger.log("render failed" + it.localizedMessage)
+                Logger.log("$modelName render failed" + it.localizedMessage)
                 null
             }
     }
@@ -78,15 +90,21 @@ class HomeFragment : Fragment() {
         viewModel.carsList.observe(viewLifecycleOwner, Observer {
             setPagerAdapter(it)
         })
-        renderGlbModel()
+
+        loadModels()
+
+    }
+
+    private fun loadModels() {
+        renderGlbModel(AppConstants.CIVIC_MODEL_GLB_NAME)
     }
 
     private fun setPagerAdapter(carList: List<CarData>) {
 
         car_loding_anim.pauseAnimation()
-        car_loding_anim.visibility=View.GONE
-        view_pager_card.visibility=View.VISIBLE
-        btn_book_test_drive.visibility=View.VISIBLE
+        car_loding_anim.visibility = View.GONE
+        view_pager_card.visibility = View.VISIBLE
+        btn_book_test_drive.visibility = View.VISIBLE
 
         val carViewAdapter = CarViewAdapter(activity as AppCompatActivity, carList.size)
         view_pager_car.adapter = carViewAdapter

@@ -6,15 +6,14 @@
     android:layout_height="match_parent"
     tools:context=".module.ar.ShowRoomActivity">
 
-
     <ProgressBar
-        android:visibility="gone"
         android:id="@+id/progress_bar"
         style="?android:attr/progressBarStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:indeterminate="true" />
+        android:indeterminate="true"
+        android:visibility="gone" />
 
 
     <fragment
@@ -53,7 +52,6 @@
     <!--    </RelativeLayout>-->
 
     <TextView
-        android:visibility="gone"
         android:id="@+id/progress_status"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -62,5 +60,59 @@
         android:padding="@dimen/dimen_24dp"
         android:text="@string/downloading"
         android:textColor="@color/colorAccent"
-        android:textSize="@dimen/text_16sp" />
+        android:textSize="@dimen/text_16sp"
+        android:visibility="gone" />
+
+    <RelativeLayout
+        android:visibility="gone"
+        android:id="@+id/color_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="@dimen/dimen_8dp">
+
+        <LinearLayout
+            android:id="@+id/ll_color_view"
+            android:layout_alignParentEnd="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/color_white_iv"
+                android:layout_width="@dimen/dimen_45dp"
+                android:layout_height="@dimen/dimen_45dp"
+                android:padding="@dimen/dimen_8dp"
+                android:src="@drawable/circle_white" />
+
+            <ImageView
+                android:id="@+id/color_blue_iv"
+                android:layout_width="@dimen/dimen_45dp"
+                android:layout_height="@dimen/dimen_45dp"
+                android:padding="@dimen/dimen_8dp"
+                android:src="@drawable/circle_blue" />
+
+            <ImageView
+                android:id="@+id/color_red_iv"
+                android:layout_width="@dimen/dimen_45dp"
+                android:layout_height="@dimen/dimen_45dp"
+                android:padding="@dimen/dimen_8dp"
+                android:src="@drawable/red_circle" />
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_below="@id/ll_color_view"
+            android:id="@+id/selected_color"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_margin="@dimen/dimen_8dp"
+            android:fontFamily="@font/gotham_bold"
+            android:textColor="@color/white"
+            android:text="@string/white"
+            android:textSize="@dimen/text_16sp" />
+
+    </RelativeLayout>
+
 </RelativeLayout>

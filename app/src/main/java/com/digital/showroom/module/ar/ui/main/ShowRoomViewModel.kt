@@ -12,6 +12,7 @@ import java.io.File
 class ShowRoomViewModel : ViewModel() {
 
     var modelFileName = MutableLiveData<File?>()
+    var model = MutableLiveData<String>()
 
 
     fun startDownloading(position:Int){
@@ -37,5 +38,14 @@ class ShowRoomViewModel : ViewModel() {
             Logger.log("$fileName model download failed ${e.localizedMessage}")
             modelFileName.value = null
         }
+    }
+
+    fun getModelName(position: Int){
+        model.value = DataRepository.getCars()?.get(position)?.model_renderable_name
+
+    }
+
+    fun isColorPaletAvailable(position: Int): Boolean {
+        return DataRepository.getCars()?.get(position)?.colorPallets?.isNotEmpty() ?: false
     }
 }

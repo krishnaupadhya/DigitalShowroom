@@ -13,5 +13,6 @@ data class CarData(
     var division: String,
     var engine_capacity: String,
     var gear_type: String,
-    var milage: String
+    var milage: String,
+    var colorPallets: List<String> = mutableListOf()
 )

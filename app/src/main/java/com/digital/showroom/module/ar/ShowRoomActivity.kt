@@ -19,9 +19,6 @@ import com.google.ar.sceneform.rendering.ModelRenderable
 import com.google.ar.sceneform.ux.ArFragment
 import com.google.ar.sceneform.ux.TransformableNode
 import kotlinx.android.synthetic.main.show_room_activity.*
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import java.io.File
 
 
 class ShowRoomActivity : AppCompatActivity() {
@@ -34,49 +31,93 @@ class ShowRoomActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.show_room_activity)
+        initView()
+        initData()
+    }
+
+    private fun initData() {
+        val position: Int = intent.getIntExtra(KEY_INTENT_POSITION, 0)
+
         viewModel = ViewModelProvider(this).get(ShowRoomViewModel::class.java)
 
-//        val position: Int = intent.getIntExtra(KEY_INTENT_POSITION, 0)
+        //Model is hardcoded for demo purposes
+        if (position == 6) {
+            viewModel.getModelName(position)
+        } else {
+            DataRepository.renderableAsset?.let { onRenderSuccess(it) };
+        }
+        viewModel.model.observe(this, Observer {
+            if (it.isNotEmpty()) renderGlbModel(it) else onDownloadFailed()
+        })
+
+        if (viewModel.isColorPaletAvailable(position)) {
+            color_layout.visibility = View.VISIBLE
+        }
+
 //        viewModel.startDownloading(position);
 //        viewModel.modelFileName.observe(this, Observer {
 //            if (it == null) onDownloadFailed() else renderGlbModel(it)
 //        })
-
-        //Model is hardoded for demo purposes
-        if (DataRepository.renderableAsset != null) {
-            renderableAsset = DataRepository.renderableAsset!!
-            initArPlane()
-        }
     }
 
-    private fun initArPlane() {
+    private fun initView() {
         arFragment = sceneform_fragment as ArFragment
         arFragment.planeDiscoveryController.hide()
         arFragment.setOnTapArPlaneListener { hitResult, plane, motionEvent ->
             anchor = hitResult.createAnchor();
             addNodeToScene(arFragment, anchor, renderableAsset)
         }
+
+        color_red_iv.setOnClickListener {
+            renderGlbModel(AppConstants.INTREGA_RED_MODEL_GLB_NAME)
+            updateSelectedColor(AppConstants.INTREGA_RED_MODEL_GLB_NAME);
+        }
+        color_blue_iv.setOnClickListener {
+            renderGlbModel(AppConstants.INTREGA_BLUE_MODEL_GLB_NAME)
+            updateSelectedColor(AppConstants.INTREGA_BLUE_MODEL_GLB_NAME);
+        }
+        color_white_iv.setOnClickListener {
+            renderGlbModel(AppConstants.INTREGA_MODEL_GLB_NAME)
+            updateSelectedColor(AppConstants.INTREGA_MODEL_GLB_NAME);
+        }
     }
 
-    private fun renderGlbModel() {
+    private fun updateSelectedColor(modelName: String) {
+        when (modelName) {
+            AppConstants.INTREGA_RED_MODEL_GLB_NAME -> {
+                selected_color.text = getString(R.string.red)
+                selected_color.setTextColor(getColor(R.color.red_dark))
+            }
+            AppConstants.INTREGA_BLUE_MODEL_GLB_NAME -> {
+                selected_color.text = getString(R.string.blue)
+                selected_color.setTextColor(getColor(R.color.blue))
+            }
+            else -> {
+                selected_color.text = getString(R.string.white)
+                selected_color.setTextColor(getColor(R.color.white))
+            }
+        }
+    }
+
+    private fun renderGlbModel(modelName: String?) {
         showProgressbar(getString(R.string.rendering))
-        Logger.log("renderGlbModel")
+        Logger.log("renderGlbModel $modelName")
         val renderableSource = RenderableSource
             .builder()
-            .setSource(this, Uri.parse(AppConstants.CIVIC_MODEL_GLB_NAME), RenderableSource.SourceType.GLB)
+            .setSource(this, Uri.parse(modelName), RenderableSource.SourceType.GLB)
             .setRecenterMode(RenderableSource.RecenterMode.ROOT)
             .build()
 
         ModelRenderable
             .builder()
             .setSource(this@ShowRoomActivity, renderableSource)
-            .setRegistryId(Uri.parse(AppConstants.CIVIC_MODEL_GLB_NAME))
+            .setRegistryId(Uri.parse(modelName))
             .build()
             .thenAccept { modelRenderable ->
-                Logger.log("rendered")
+                Logger.log("$modelName rendered")
                 onRenderSuccess(modelRenderable);
             }.exceptionally {
-                Logger.log("render failed" + it.localizedMessage)
+                Logger.log("$modelName render failed" + it.localizedMessage)
                 onDownloadFailed()
                 null
             }
@@ -84,11 +125,8 @@ class ShowRoomActivity : AppCompatActivity() {
     }
 
     private fun onRenderSuccess(modelRenderable: ModelRenderable) {
-        runOnUiThread {
-            renderableAsset = modelRenderable
-            initArPlane()
-            onDownloadFailed()
-        }
+        renderableAsset = modelRenderable
+        hideProgressbar()
     }
 
     private fun onDownloadFailed() {
@@ -97,13 +135,12 @@ class ShowRoomActivity : AppCompatActivity() {
 
     private fun hideProgressbar() {
         Logger.log("gone")
-        progress_bar.visibility = View.GONE
         progress_status.visibility = View.GONE
     }
 
     private fun showProgressbar(status: String = getString(R.string.downloading)) {
         Logger.log("visible")
-        progress_bar.visibility = View.VISIBLE
+        progress_status.visibility = View.VISIBLE
         progress_status.text = status
     }
 
