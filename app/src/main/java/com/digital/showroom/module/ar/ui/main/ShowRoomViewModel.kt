@@ -9,13 +9,13 @@ import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.launch
 import java.io.File
 
-class ShowRoomViewModel : ViewModel() {
+class ShowRoomViewModel(var position: Int) : ViewModel() {
 
     var modelFileName = MutableLiveData<File?>()
     var model = MutableLiveData<String>()
 
 
-    fun startDownloading(position:Int){
+    fun startDownloading(position: Int) {
         viewModelScope.launch {
             downloadModel(position)
         }
@@ -40,7 +40,7 @@ class ShowRoomViewModel : ViewModel() {
         }
     }
 
-    fun getModelName(position: Int){
+    fun getModelName(position: Int) {
         model.value = DataRepository.getCars()?.get(position)?.model_renderable_name
 
     }

@@ -6,11 +6,13 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import com.digital.showroom.R
 import com.digital.showroom.module.ar.ui.main.ShowRoomViewModel
 import com.digital.showroom.repository.DataRepository
 import com.digital.showroom.utils.AppConstants
 import com.digital.showroom.utils.AppConstants.Companion.KEY_INTENT_POSITION
+import com.digital.showroom.utils.BaseViewModelFactory
 import com.digital.showroom.utils.Logger
 import com.google.ar.core.Anchor
 import com.google.ar.sceneform.AnchorNode
@@ -23,10 +25,10 @@ import kotlinx.android.synthetic.main.show_room_activity.*
 
 class ShowRoomActivity : AppCompatActivity() {
 
+    private lateinit var viewModel: ShowRoomViewModel
     private var anchor: Anchor? = null
     private lateinit var arFragment: ArFragment
     private lateinit var renderableAsset: ModelRenderable
-    private lateinit var viewModel: ShowRoomViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,8 +39,11 @@ class ShowRoomActivity : AppCompatActivity() {
 
     private fun initData() {
         val position: Int = intent.getIntExtra(KEY_INTENT_POSITION, 0)
-
-        viewModel = ViewModelProvider(this).get(ShowRoomViewModel::class.java)
+        viewModel =
+            ViewModelProvider(this, BaseViewModelFactory { ShowRoomViewModel(position) }).get(
+                ShowRoomViewModel::class.java
+            )
+//        viewModel = ViewModelProvider(this).get(ShowRoomViewModel::class.java)
 
         //Model is hardcoded for demo purposes
         if (position == 6) {
